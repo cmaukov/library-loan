@@ -6,7 +6,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Button?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.almasb.libraryloan.Controller">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bastechpro.libraryloan.Controller">
 	<TextField onAction="#onSearch" />
 	<ChoiceBox fx:id="choiceBox" />
 	
