@@ -28,7 +28,6 @@ public class Controller {
     public void initialize() {
         choiceBox.getItems().setAll(BookSearchType.values());
         choiceBox.getSelectionModel().selectFirst();
-        listView.getItems().setAll(model.loadAll());
     }
 
     public void onSearch(ActionEvent event) {
