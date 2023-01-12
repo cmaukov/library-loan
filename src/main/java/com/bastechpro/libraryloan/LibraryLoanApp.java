@@ -11,8 +11,11 @@ import javafx.stage.Stage;
 
 public class LibraryLoanApp extends Application {
 
+//    private BookDAO buildDAO() {
+//        return new DerbyBookDAO();
+//    }
     private BookDAO buildDAO() {
-        return new DerbyBookDAO();
+        return new MySqlBookDAO();
     }
 
     private Library buildModel() {
@@ -34,8 +37,9 @@ public class LibraryLoanApp extends Application {
     public static void main(String[] args) throws Exception {
         launch(args);
 //                BookDAO bookDAO = new DerbyBookDAO();
+//                BookDAO bookDAO = new MySqlBookDAO();
 //
-//        bookDAO.setup();
+////        bookDAO.setup();
 //
 //        Library model = new Library(bookDAO);
 //        model.addNewBook("TestName1", "John Smith_Jack Smith_Jane Smith", 2010);

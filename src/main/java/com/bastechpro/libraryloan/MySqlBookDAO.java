@@ -1,6 +1,6 @@
 package com.bastechpro.libraryloan;
 /* library-loan
- * @created 01/10/2023
+ * @created 01/11/2023
  * @author Konstantin Staykov
  */
 
@@ -9,47 +9,37 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.math.BigInteger;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DerbyBookDAO implements BookDAO {
+public class MySqlBookDAO implements BookDAO {
     private Connection connection;
-
     private final QueryRunner dbAccess = new QueryRunner();
-
     private static final List<Book> EMPTY = new ArrayList<>();
 
     @Override
     public void setup() throws Exception {
-        connection = DriverManager.getConnection("jdbc:derby:books.db;create=true");
 
-        dbAccess.update(connection, "CREATE TABLE Books ("
-                + "uniqueID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
-                + "name VARCHAR(30), authors VARCHAR(100), publishedYear INTEGER, available BOOLEAN"
-                + ")");
     }
 
     @Override
     public void connect() throws Exception {
-        connection = DriverManager.getConnection("jdbc:derby:books.db");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "dbuser", "dbuser");
     }
 
     @Override
     public void close() throws Exception {
         connection.close();
-        try {
-            DriverManager.getConnection("jdbc:derby:books.db;shutdown=true");
-        }
-        catch (Exception e) {}
     }
 
     @Override
     public long insertBook(Book book) {
-
         try {
             long id = dbAccess.insert(connection, "INSERT INTO Books (name, authors, publishedYear, available) VALUES (?, ?, ?, ?)",
-                    new ScalarHandler<BigDecimal>(), book.getName(), book.getAuthors(), book.getPublishedYear(), book.isAvailable()).longValue();
+                    new ScalarHandler<BigInteger>(), book.getName(), book.getAuthors(), book.getPublishedYear(), book.isAvailable()).longValue();
             return id;
         }
         catch (Exception e) {
@@ -61,28 +51,11 @@ public class DerbyBookDAO implements BookDAO {
 
     @Override
     public boolean updateBook(Book book) {
-
-        try {
-            dbAccess.update(connection, "UPDATE Books SET name=?, authors=?, publishedYear=?, available=? WHERE uniqueID=?",
-                    book.getName(), book.getAuthors(), book.getPublishedYear(), book.isAvailable(), book.getUniqueID());
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return false;
     }
 
     @Override
     public boolean deleteBook(Book book) {
-        try {
-            dbAccess.update(connection, "DELETE FROM Books WHERE uniqueID=?", book.getUniqueID());
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
         return false;
     }
 
@@ -98,6 +71,8 @@ public class DerbyBookDAO implements BookDAO {
             }
             case AVAILABLE -> {
                 whereClause = "available = ?";
+
+//                valueClause = value.toString().equals("true")?"1":"0";
                 valueClause = value.toString();
             }
             case ID -> {
@@ -127,14 +102,8 @@ public class DerbyBookDAO implements BookDAO {
 
     @Override
     public List<Book> findAll() {
-        try {
-            return dbAccess.query(connection, "SELECT * FROM Books", new BeanListHandler<>(Book.class));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return EMPTY;
+        return null;
     }
+
 
 }

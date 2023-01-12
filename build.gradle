@@ -14,6 +14,7 @@ repositories {
 
 ext {
     junitVersion = '5.9.1'
+    apacheDerby = '10.15.2.0'
 }
 
 sourceCompatibility = '17'
@@ -37,7 +38,8 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-    implementation  'org.apache.derby:derby:10.16.1.1'
+    implementation  "org.apache.derby:derby:${apacheDerby}"
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
     implementation 'commons-dbutils:commons-dbutils:1.7'
 
 
